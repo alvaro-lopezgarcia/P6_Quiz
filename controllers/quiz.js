@@ -153,3 +153,65 @@ exports.check = (req, res, next) => {
         answer
     });
 };
+
+// GET /quizzes/:quizId/play
+exports.randomplay = (req, res, next) => {
+ 
+    var answer = req.query.answer || "";
+
+    req.session.score = req.session.score || 0;
+   
+    models.quiz.findAll()
+    .then(function(quiz){
+        req.session.quiz = req.session.quiz || quiz;
+        while(quiz === 0){
+            var posicion = Math.floor(Math.random()*req.session.quiz.length);
+            if(posicion === quizzes.length)
+                posicion--;
+            quiz = req.session.quizzes[posicion];
+        }
+        req.session.quiz[posicion] = 0;
+
+        res.render('quizzes/randomplay',{
+            quiz: quiz,
+            answer: answer,
+            score: req.session.score
+        });
+    }).catch(function(error){
+        next(error);
+    });
+};
+
+
+// GET /quizzes/randomcheck/:quizId
+exports.randomcheck = function (req, res, next) {
+
+    var answer = req.query.answer || "";
+
+    var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
+    
+    var quizzes= req.session.quiz;
+
+    if (result) {
+        req.session.score++;
+        var score = req.session.score; 
+    }
+    else{
+        var score = req.session.score;
+        req.session.score=0;
+        //req.session.quiz = undefined;
+    }
+    if (score === quizzes.length){
+        res.render('quizzes/random_nomore', {
+           score: score
+        });
+    }
+    else {
+        res.render('quizzes/random_result', {
+           quiz: req.quiz,
+           result: result,
+           answer: answer,
+           score: score
+        });
+    }
+};
