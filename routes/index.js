@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-var Sequelize= require("sequelize");
+//var Sequelize= require("sequelize");
 const{models}= require("../models");
 const quizController = require('../controllers/quiz');
 const tipController = require('../controllers/tip');
@@ -51,15 +51,15 @@ router.get('/', (req, res, next) => {
 router.get('/author', (req, res, next) => {
     res.render('author');
 });
-
-router.get('/quizzes', (req, res, next) =>{
+	//COMENTADO EN EL DE ALBAYANA
+/*router.get('/quizzes', (req, res, next) =>{
 	models.quiz.findAll()
 	.then(quizzes=>{
 		res.render('quizzes',{quizzes});
 	})
 	.catch(error=>next(error));
 	
-});
+}); */
 
 router.get('/quizzes/randomplay',         quizController.randomplay);
 router.get('/quizzes/randomcheck/:quizId(\\d+)',         quizController.randomcheck);

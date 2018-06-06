@@ -65,7 +65,14 @@ sequelize.import(path.join(__dirname,'user'));
 // Session
 sequelize.import(path.join(__dirname,'session'));
 
-
+// Create tables		METIDO DE LA 6
+/*sequelize.sync()
+.then(() => console.log('Data Bases created successfully'))
+.catch(error => {
+    console.log("Error creating the data base tables:", error);
+    process.exit(1);
+});
+*/
 // Relation between models
 
 const {quiz, tip, user} = sequelize.models;
